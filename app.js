@@ -1,74 +1,84 @@
-// set inital value to zero
-let count = 0;
-// select value and buttons
-const value = document.querySelector("#value");
-const btns = document.querySelectorAll(".btn");
+// local reviews data
+const reviews = [
+  {
+    id: 1,
+    name: 'susan smith',
+    job: 'web developer',
+    img: 'https://images2.imgbox.com/e0/57/qI5bbwvg_o.jpeg',
+    text: "I'm baby meggings twee health goth +1. Bicycle rights tumeric chartreuse before they sold out chambray pop-up. Shaman humblebrag pickled coloring book salvia hoodie, cold-pressed four dollar toast everyday carry",
+  },
+  {
+    id: 2,
+    name: 'anna johnson',
+    job: 'web designer',
+    img: 'https://images2.imgbox.com/2e/6e/JAMvTZ56_o.jpeg',
+    text: 'Helvetica artisan kinfolk thundercats lumbersexual blue bottle. Disrupt glossier gastropub deep v vice franzen hell of brooklyn twee enamel pin fashion axe.photo booth jean shorts artisan narwhal.',
+  },
+  {
+    id: 3,
+    name: 'peter jones',
+    job: 'intern',
+    img: 'https://images2.imgbox.com/56/88/oJvFN3l5_o.jpeg',
+    text: 'Sriracha literally flexitarian irony, vape marfa unicorn. Glossier tattooed 8-bit, fixie waistcoat offal activated charcoal slow-carb marfa hell of pabst raclette post-ironic jianbing swag.',
+  },
+  {
+    id: 4,
+    name: 'bill anderson',
+    job: 'the boss',
+    img: 'https://images2.imgbox.com/8b/1c/vwWNTsCd_o.jpeg',
+    text: 'Edison bulb put a bird on it humblebrag, marfa pok pok heirloom fashion axe cray stumptown venmo actually seitan. VHS farm-to-table schlitz, edison bulb pop-up 3 wolf moon tote bag street art shabby chic. ',
+  },
+];
+// select items
+const img = document.getElementById('person-img');
+const author = document.getElementById('author');
+const job = document.getElementById('job');
+const info = document.getElementById('info');
 
-btns.forEach(function (btn) {
-  btn.addEventListener("click", function (e) {
-    const styles = e.currentTarget.classList;
-    if (styles.contains("decrease")) {
-      count--;
-    } else if (styles.contains("increase")) {
-      count++;
-    } else {
-      count = 0;
-    }
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const randomBtn = document.querySelector('.random-btn');
 
-    if (count > 0) {
-      value.style.color = "green";
-    }
-    if (count < 0) {
-      value.style.color = "red";
-    }
-    if (count === 0) {
-      value.style.color = "#222";
-    }
-    value.textContent = count;
-  });
+// set starting item
+let currentItem = 0;
+
+// load initial item
+window.addEventListener('DOMContentLoaded', function () {
+  const item = reviews[currentItem];
+  img.src = item.img;
+  author.textContent = item.name;
+  job.textContent = item.job;
+  info.textContent = item.text;
 });
 
-
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-      minutes = parseInt(timer / 60, 10)
-      seconds = parseInt(timer % 60, 10);
-  
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-  
-      display.textContent = minutes + ":" + seconds;
-  
-      if (--timer < 0) {
-        timer = duration;
-      }
-    }, 1000);
-  }
-  
-  var fiveMinutes = 60 * 5,
-  display = document.querySelector('#time');
-  startTimer(fiveMinutes, display);
-
-
-  function startTime() {
-    //set time i nhours, minutes and seconds.
-    const d = new Date();
-    let h = d.getHours();
-    let m = d.getMinutes();
-    let s = d.getSeconds();
-
-    //set m and s to have an added zero in front.
-    m = addZero(m);
-    s = addZero(s);
-
-    //attach the calculations to the 'txt' in html
-    document.getElementById("txt").innerHTML =  h + ":" + m + ":" + s;
-    setTimeout(startTime, 1000);
-  }
-function addZero(i) {
-    if (i < 10) {i = "0" + i};
-    return i;
+// show person based on item
+function showPerson(person) {
+  const item = reviews[person];
+  img.src = item.img;
+  author.textContent = item.name;
+  job.textContent = item.job;
+  info.textContent = item.text;
 }
+// show next person
+nextBtn.addEventListener('click', function () {
+  currentItem++;
+  if (currentItem > reviews.length - 1) {
+    currentItem = 0;
+  }
+  showPerson(currentItem);
+});
+// show prev person
+prevBtn.addEventListener('click', function () {
+  currentItem--;
+  if (currentItem < 0) {
+    currentItem = reviews.length - 1;
+  }
+  showPerson(currentItem);
+});
+// show random person
+randomBtn.addEventListener('click', function () {
+  console.log('hello');
 
- 
+  currentItem = Math.floor(Math.random() * reviews.length);
+  showPerson(currentItem);
+});
